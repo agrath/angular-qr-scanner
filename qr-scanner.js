@@ -100,7 +100,11 @@ angular.module('qrScanner', [])
 
         element.bind('$destroy', function() {
           if ($window.localMediaStream) {
-            $window.localMediaStream.stop();
+            //https://developers.google.com/web/updates/2015/07/mediastream-deprecations?hl=en#stop-ended-and-active
+            //$window.localMediaStream.stop() is deprecated in chrome
+            var stream = $window.localMediaStream;
+            var track = stream.getTracks()[0];  // if only one media track
+            track.stop();
           }
           if (stopScan) {
             $interval.cancel(stopScan);
